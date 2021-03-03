@@ -1,10 +1,20 @@
 all: test
 
-test: MockEventDisplayManager.cc test_evd.cpp Dict.cc
-	c++ `root-config --cflags` -L`root-config --libdir` MockEventDisplayManager.cc Dict.cc test_evd.cpp -lROOTEve -lROOTWebDisplay -lCore -g -O0 -o test
+libMockEventDisplayManager.so: MockEventDisplayManager.o Dict.o
+	c++ -shared -pthread $^ -o $@
+
+test: libMockEventDisplayManager.so test_evd.o
+	c++ `root-config --cflags` test_evd.o -L. -lMockEventDisplayManager  -L`root-config --libdir` -lROOTEve -lROOTWebDisplay -lCore -lMathCore -g -O0 -o test
+
+%.o: %.cc
+	c++  `root-config --cflags` -fPIC -c $^ -o $@
+
+%.o: %.cpp
+	c++  `root-config --cflags` -fPIC -c $^ -o $@
 
 Dict.cc: MockEventDisplayManager.h LinkDef.h
 	rootcling -f Dict.cc MockEventDisplayManager.h  LinkDef.h
 
 clean:
+	rm -f *.o *.so
 	rm -f Dict* test
