@@ -1,4 +1,6 @@
 #include "MockEventDisplayManager.h"
+#include <ROOT/RWebWindow.hxx>
+#include "ROOT/RWebWindowsManager.hxx"
 
 #include "ROOT/REveElement.hxx"
 #include "ROOT/REveManager.hxx"
@@ -131,6 +133,7 @@ namespace {
   void
   MockModule::setup_eve()
   {
+    REX::RWebWindowsManager::AssignMainThrd();
     eveMng_ = REX::REveManager::Create();
 
     eventMgr_ = new test::MockEventDisplayManager{eveMng_, cv_, m_};
