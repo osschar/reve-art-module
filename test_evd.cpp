@@ -5,10 +5,12 @@
 #include "ROOT/REveElement.hxx"
 #include "ROOT/REveManager.hxx"
 #include "ROOT/REveScene.hxx"
+#include "ROOT/REvePointSet.hxx"
 
 #include "TApplication.h"
 #include "TROOT.h"
 #include "TSystem.h"
+#include "TRandom.h"
 
 #include <condition_variable>
 #include <iostream>
@@ -158,6 +160,19 @@ namespace {
     // for (auto& ie : scene->RefChildren()) {
     //   // Handle scene elements ...
     // }
+    TRandom &r = *gRandom;
+    int npoints = 100; float s  =2;
+    auto ps = new REX::REvePointSet("fu", "", npoints);
+
+    for (Int_t i=0; i<npoints; ++i)
+       ps->SetNextPoint(r.Uniform(-s,s), r.Uniform(-s,s), r.Uniform(-s,s));
+
+    ps->SetMarkerColor(kRed);
+    ps->SetMarkerSize(3+r.Uniform(1, 7));
+    ps->SetMarkerStyle(4);
+    scene->AddElement(ps);
+
+
     eveMng_->EnableRedraw();
     // eveMng_->DoRedraw3D();
   }
