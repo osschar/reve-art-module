@@ -153,10 +153,13 @@ namespace {
 
   void
   MockModule::process_single_event()
-  {
+  {    
     eveMng_->DisableRedraw();
+    eveMng_->GetWorld()->BeginAcceptingChanges();
+    eveMng_->GetScenes()->AcceptChanges(true);
+    
     auto scene = eveMng_->GetEventScene();
-    scene->DestroyElements();
+  //  scene->DestroyElements();
     // for (auto& ie : scene->RefChildren()) {
     //   // Handle scene elements ...
     // }
@@ -167,14 +170,14 @@ namespace {
     for (Int_t i=0; i<npoints; ++i)
        ps->SetNextPoint(r.Uniform(-s,s), r.Uniform(-s,s), r.Uniform(-s,s));
 
-    ps->SetMarkerColor(kRed);
+    ps->SetMarkerColor(r.Integer(700));
     ps->SetMarkerSize(3+r.Uniform(1, 7));
     ps->SetMarkerStyle(4);
     scene->AddElement(ps);
 
-
+    eveMng_->GetScenes()->AcceptChanges(false);
+    eveMng_->GetWorld()->EndAcceptingChanges();
     eveMng_->EnableRedraw();
-    // eveMng_->DoRedraw3D();
   }
   
 } // namespace
@@ -183,7 +186,7 @@ int
 main()
 {
   ROOT::EnableThreadSafety();
-  gDebug = 1;
+  //gDebug = 1;
 
   MockModule module;
   module.beginJob();
