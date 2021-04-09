@@ -105,7 +105,8 @@ namespace {
     {
       printf("MockModule::analyze() Event processing started entered\n");
 
-      XThreadTimer proc_timer([this]{ process_single_event(); });
+      
+        XThreadTimer proc_timer([this] { process_single_event(); });
       printf("MockModule::event_display_loop -- transferring to TApplication thread\n");
       cv_.wait(lock);
       printf("MockModule::event_display_loop -- TApplication thread returning control\n");
@@ -154,15 +155,10 @@ namespace {
   void
   MockModule::process_single_event()
   {    
-    eveMng_->DisableRedraw();
-    eveMng_->GetWorld()->BeginAcceptingChanges();
-    eveMng_->GetScenes()->AcceptChanges(true);
+    REX::REveManager::ChangeGuard chGuard;
+    printf("BEGINNING process_single_event_event add pointset!!!!!!!\n");
     
     auto scene = eveMng_->GetEventScene();
-  //  scene->DestroyElements();
-    // for (auto& ie : scene->RefChildren()) {
-    //   // Handle scene elements ...
-    // }
     TRandom &r = *gRandom;
     int npoints = 100; float s  =2;
     auto ps = new REX::REvePointSet("fu", "", npoints);
@@ -175,10 +171,8 @@ namespace {
     ps->SetMarkerStyle(4);
     scene->AddElement(ps);
 
-    eveMng_->GetScenes()->AcceptChanges(false);
-    eveMng_->GetWorld()->EndAcceptingChanges();
-    eveMng_->EnableRedraw();
   }
+
   
 } // namespace
 
@@ -195,6 +189,7 @@ main()
   try {
     // Event loop runs on main thread
     for (unsigned i = 0; i != n_events; ++i) {
+      printf("analyzie modeule %d\n", i);
       module.analyze(i);
     }
   }
