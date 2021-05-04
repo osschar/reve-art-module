@@ -42,7 +42,7 @@ namespace {
     std::condition_variable cv_{};
 
     unsigned displayedEventID_{test::invalid_event};
-    REX::REveManager* eveMng_{nullptr};
+    REX::REveManager* eveMgr_{nullptr};
     test::MockEventDisplayManager* eventMgr_{nullptr};
   };
 
@@ -137,16 +137,16 @@ namespace {
   MockModule::setup_eve()
   {
     REX::RWebWindowsManager::AssignMainThrd();
-    eveMng_ = REX::REveManager::Create();
+    eveMgr_ = REX::REveManager::Create();
 
-    eventMgr_ = new test::MockEventDisplayManager{eveMng_, cv_, m_};
-    auto world = eveMng_->GetWorld();
+    eventMgr_ = new test::MockEventDisplayManager{eveMgr_, cv_, m_};
+    auto world = eveMgr_->GetWorld();
     assert(world);
     world->AddElement(eventMgr_);
     world->AddCommand("QuitRoot",  "sap-icon://log",  eventMgr_, "QuitRoot()");
     world->AddCommand("NextEvent", "sap-icon://step", eventMgr_, "NextEvent()");
 
-    eveMng_->Show();
+    eveMgr_->Show();
 
     std::unique_lock lock{m_};
     cv_.notify_all();
@@ -158,7 +158,7 @@ namespace {
     REX::REveManager::ChangeGuard chGuard;
     printf("BEGINNING process_single_event_event add pointset!!!!!!!\n");
     
-    auto scene = eveMng_->GetEventScene();
+    auto scene = eveMgr_->GetEventScene();
     TRandom &r = *gRandom;
     int npoints = 100; float s  =2;
     auto ps = new REX::REvePointSet("fu", "", npoints);
