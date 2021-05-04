@@ -26,9 +26,10 @@ namespace test {
   MockEventDisplayManager::QuitRoot()
   {
     // This will wreak havoc if not thrown from the main thread.
+    doneProcessingEvents_ = true;
     std::unique_lock<std::mutex> lock{*m_};
     cv_->notify_all();
-    throw std::runtime_error("EventDisplay");
+    // throw std::runtime_error("EventDisplay");
   }
 
 }
