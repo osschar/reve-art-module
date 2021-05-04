@@ -25,6 +25,7 @@ namespace test {
 
     void NextEvent();
     void QuitRoot();
+    bool isDoneProcessing() { return doneProcessingEvents_;}
 
   private:
     ROOT::Experimental::REveManager* eveMng_{nullptr};
