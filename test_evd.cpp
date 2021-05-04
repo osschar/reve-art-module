@@ -136,7 +136,6 @@ namespace {
   void
   MockModule::setup_eve()
   {
-    REX::RWebWindowsManager::AssignMainThrd();
     eveMgr_ = REX::REveManager::Create();
 
     eventMgr_ = new test::MockEventDisplayManager{eveMgr_, cv_, m_};
