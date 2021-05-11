@@ -1,4 +1,4 @@
-# reve-pain
+# reve-art-module
 
 Minimal reproducer that mimics (an attempted) usage of REve in art framework.
 
