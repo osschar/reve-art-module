@@ -32,6 +32,17 @@ namespace test {
     std::mutex* m_{nullptr};
     bool doneProcessingEvents_{false};
   };
+
+  class Gui : public ROOT::Experimental::REveElement
+  {
+  public:
+    int fCount{0};
+    int fTotal{10};
+    int fLumi{1111};
+
+    using REveElement::WriteCoreJson;
+    int WriteCoreJson(nlohmann::json &j, int rnr_offset) override;
+  };
 }
 
 #endif /* MockEventDisplayManager_h */

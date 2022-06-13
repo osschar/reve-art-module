@@ -6,6 +6,8 @@
 #include <stdexcept>
 #include <iostream>
 
+#include "nlohmann/json.hpp"
+q
 namespace test {
 
   MockEventDisplayManager::MockEventDisplayManager(
@@ -31,4 +33,12 @@ namespace test {
     throw std::runtime_error("EventDisplay");
   }
 
+  int Gui::WriteCoreJson(nlohmann::json &j, int rnr_offset)
+  {
+    j["path"] = "mock_path";
+    j["count"] = fCount;
+    j["total"] = fTotal;
+    j["UT_PostStream"] = "UT_refresh_event_info";
+    return REveElement::WriteCoreJson(j, 0);
+  }
 }

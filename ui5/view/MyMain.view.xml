@@ -1,0 +1,37 @@
+<mvc:View height="100%" class="sapUiSizeCompact"
+          controllerName="custom.controller.MyNewMain"
+          xmlns="sap.m"
+          xmlns:mvc="sap.ui.core.mvc"
+          xmlns:l="sap.ui.layout"
+          xmlns:commons="sap.ui.commons">
+         <Page title="EVE-7" showNavButton="false" showFooter="false" enableScrolling="false"
+         showHeader="true"
+         showSubHeader="true" id="CanvasMainPage">
+     <customHeader>
+       <Bar id="otb1" >
+         <contentLeft>
+            <MenuButton text="View" type="Transparent"  enabled="true">
+              <menu>
+                <Menu itemSelected="onViewMenuAction" id="menuViewId"/>
+              </menu>
+            </MenuButton>
+         </contentLeft>
+         <contentMiddle>
+                <FormattedText id="centerTitle" htmlText="ABC Event Display"/>
+         </contentMiddle>
+         <contentRight>
+                <Label id="infoLabel" text="text"/>
+         </contentRight>
+        </Bar>
+     </customHeader>
+      <content>
+        <l:Splitter orientation="Horizontal" id="MainAreaSplitter">
+          <l:contentAreas>
+             <mvc:XMLView id="Summary" viewName="rootui5.eve7.view.Summary" height="100%">
+                <mvc:layoutData><l:SplitterLayoutData size="25%"/></mvc:layoutData>
+             </mvc:XMLView>
+          </l:contentAreas>
+        </l:Splitter>
+      </content>
+    </Page>
+  </mvc:View>

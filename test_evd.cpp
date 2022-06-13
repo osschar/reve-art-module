@@ -44,6 +44,7 @@ namespace {
     unsigned displayedEventID_{test::invalid_event};
     REX::REveManager* eveMng_{nullptr};
     test::MockEventDisplayManager* eventMgr_{nullptr};
+    test::Gui* gui_{nullptr};
   };
 
   class XThreadTimer : public TTimer {
@@ -145,6 +146,13 @@ namespace {
     world->AddCommand("QuitRoot",  "sap-icon://log",  eventMgr_, "QuitRoot()");
     world->AddCommand("NextEvent", "sap-icon://step", eventMgr_, "NextEvent()");
 
+    gui_ = new test::Gui();
+    gui_->SetName("WebGuiInfo");
+    eveMng_->GetWorld()->AddElement(gui_);
+
+    eveMng_->AddLocation("mydir/", "ui5");
+    eveMng_->SetDefaultHtmlPage("file:mydir/eventDisplay.html");
+
     eveMng_->Show();
 
     std::unique_lock lock{m_};
@@ -174,6 +182,9 @@ namespace {
     ps->SetMarkerSize(3+r.Uniform(1, 7));
     ps->SetMarkerStyle(4);
     scene->AddElement(ps);
+
+    gui_->fCount++;
+    gui_->StampObjProps();
 
     eveMng_->GetScenes()->AcceptChanges(false);
     eveMng_->GetWorld()->EndAcceptingChanges();
