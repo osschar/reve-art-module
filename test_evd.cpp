@@ -6,6 +6,7 @@
 #include "ROOT/REveManager.hxx"
 #include "ROOT/REveScene.hxx"
 #include "ROOT/REvePointSet.hxx"
+#include "ROOT/REveJetCone.hxx"
 
 #include "TApplication.h"
 #include "TROOT.h"
@@ -136,7 +137,7 @@ namespace {
   void
   MockModule::setup_eve()
   {
-    REX::RWebWindowsManager::AssignMainThrd();
+    ROOT::RWebWindowsManager::AssignMainThrd();
     eveMng_ = REX::REveManager::Create();
 
     eventMgr_ = new test::MockEventDisplayManager{eveMng_, cv_, m_};
@@ -150,8 +151,8 @@ namespace {
     gui_->SetName("WebGuiInfo");
     eveMng_->GetWorld()->AddElement(gui_);
 
-    eveMng_->AddLocation("mydir/", "ui5");
-    eveMng_->SetDefaultHtmlPage("file:mydir/eventDisplay.html");
+    //eveMng_->AddLocation("mydir/", "ui5");
+    //eveMng_->SetDefaultHtmlPage("file:mydir/eventDisplay.html");
 
     eveMng_->Show();
 
@@ -182,6 +183,15 @@ namespace {
     ps->SetMarkerSize(3+r.Uniform(1, 7));
     ps->SetMarkerStyle(4);
     scene->AddElement(ps);
+
+    
+    auto jet = new REX::REveJetCone();
+    jet->SetCylinder(1, 1);
+    jet->AddEllipticCone(r.Uniform(-0.5, 0.5), r.Uniform(0, TMath::TwoPi()), 0.1, 0.2);
+    jet->SetFillColor(kPink - 8);
+    jet->SetLineColor(kViolet - 7);
+
+    scene->AddElement(jet);
 
     gui_->fCount++;
     gui_->StampObjProps();

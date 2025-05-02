@@ -7,7 +7,7 @@
 #include <iostream>
 
 #include "nlohmann/json.hpp"
-q
+
 namespace test {
 
   MockEventDisplayManager::MockEventDisplayManager(
